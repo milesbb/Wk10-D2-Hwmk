@@ -1,26 +1,64 @@
 import { Button, FormControl, InputGroup, ListGroup } from "react-bootstrap";
 import SingleBook from "./SingleBook";
 import books from "../books/history.json";
+import { Component } from "react";
 
-const BookList = () => {
-  return (
-    <div className="w-75 m-auto">
-      <InputGroup className="mb-3">
-        <FormControl
-          placeholder="Search for books"
-          aria-label="Recipient's username"
-          aria-describedby="basic-addon2"
-        />
-        <InputGroup.Append>
-          <Button variant="outline-secondary">Search</Button>
-        </InputGroup.Append>
-      </InputGroup>
+class BookList extends Component {
+  state = {
+    query: "",
+  };
 
-      <ListGroup>
-        {books.map((book) => <ListGroup.Item><div style={{backgroundImage: `url("${book.img}")`, backgroundRepeat: "no-repeat", objectFit: "contain", backgroundSize: "300px", height: 400, margin: "auto"}}><div style={{background: "white", position: "absolute", left: "30%", top: "40%", fontSize: "2rem", textAlign: "left"}}>{book.title}</div></div></ListGroup.Item> )}
+  booksDisplay = books;
+
+  filterBooks = () => {
+    console.log("filtering...");
+    if (this.state.query) {
+      // create filtered books array
+      this.booksDisplay = books;
+      this.booksDisplay = books.filter(
+        (book) => book.title.toLowerCase().includes(this.state.query.toLowerCase()) === true
+      );
+      console.log(this.state.query);
+      console.log(this.booksDisplay);
+      //   this.render();
+    } else {
+      this.booksDisplay = books;
+      // end function early if no query set
+      return;
+    }
+  };
+
+  onKeyEnter = (event) => {
+    this.setState({ query: event.target.value });
+    this.filterBooks();
+    this.filterBooks();
+    this.filterBooks();
+    this.filterBooks();
+  };
+
+  render() {
+    return (
+      <div className="w-75 m-auto">
+        <InputGroup className="mb-3">
+          <FormControl
+            placeholder="Search for books"
+            aria-label="Recipient's username"
+            aria-describedby="basic-addon2"
+            value={this.state.query}
+            onChange={
+                this.onKeyEnter
+                }
+          />
+        </InputGroup>
+
+        <ListGroup>
+          {this.booksDisplay.map((book, i) => (
+            <SingleBook key={i} book={book} />
+          ))}
         </ListGroup>
-    </div>
-  );
-};
+      </div>
+    );
+  }
+}
 
 export default BookList;
