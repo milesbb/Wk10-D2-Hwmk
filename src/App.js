@@ -12,8 +12,7 @@ function App() {
     <div className="App">
       <MyNav />
       <h1>Book Finder</h1>
-      <WarningSign text="Test text" />
-      <MyBadge text="test" color="green" />
+      {/* <WarningSign text="Test text" /> */}
       <BookList />
     </div>
   );

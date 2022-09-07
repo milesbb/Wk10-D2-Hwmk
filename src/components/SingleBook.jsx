@@ -17,7 +17,7 @@ class SingleBook extends Component {
 
     render() {
         if (this.state.selected) {
-            return <ListGroup.Item onClick={this.selectItem}><MyBadge text="selected" color="green" /><div style={{backgroundImage: `url("${this.props.book.img}")`, backgroundRepeat: "no-repeat", objectFit: "contain", backgroundSize: "300px", height: 400, margin: "auto"}}><div style={{background: "white", position: "absolute", left: "30%", top: "40%", fontSize: "2rem", textAlign: "left"}}>{this.props.book.title}</div></div></ListGroup.Item>
+            return <ListGroup.Item onClick={this.selectItem} style={{background: "#cff0ce"}}><MyBadge text="selected" color="green" /><div style={{backgroundImage: `url("${this.props.book.img}")`, backgroundRepeat: "no-repeat", objectFit: "contain", backgroundSize: "300px", height: 400, margin: "auto"}}><div style={{background: "#cff0ce", position: "absolute", left: "30%", top: "40%", fontSize: "2rem", textAlign: "left"}}>{this.props.book.title}</div></div></ListGroup.Item>
         } else {
             return <ListGroup.Item onClick={this.selectItem}><div style={{backgroundImage: `url("${this.props.book.img}")`, backgroundRepeat: "no-repeat", objectFit: "contain", backgroundSize: "300px", height: 400, margin: "auto"}}><div style={{background: "white", position: "absolute", left: "30%", top: "40%", fontSize: "2rem", textAlign: "left"}}>{this.props.book.title}</div></div></ListGroup.Item>
         };
