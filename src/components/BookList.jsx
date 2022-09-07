@@ -28,6 +28,7 @@ class BookList extends Component {
       console.log(this.booksDisplay);
     } else {
       // end function early if no query set
+    //   this.setState({query: ""});
       this.booksDisplay = books;
       return;
     }
@@ -35,6 +36,7 @@ class BookList extends Component {
 
   // assigns value of search bar to query variable on change of value and reloads books
   onKeyEnter = (event) => {
+    this.filterBooks();
     this.setState({ query: event.target.value });
     this.filterBooks();
   };
@@ -57,8 +59,8 @@ class BookList extends Component {
           <WarningSign text="No books found" />
         </div>
       );
-    } else {
-      // if there are results, returns results using mapped SingleBook components
+    } else if (this.state.query === "") {
+      // if query field is empty, display all books
       return (
         <div className="w-75 m-auto">
           <InputGroup className="mb-3">
@@ -72,13 +74,34 @@ class BookList extends Component {
           </InputGroup>
 
           <ListGroup>
-            {this.booksDisplay.map((book, i) => (
+            {books.map((book, i) => (
               <SingleBook key={i} book={book} />
             ))}
           </ListGroup>
         </div>
       );
-    }
+    } else {
+        // if there are results, returns results using mapped SingleBook components
+        return (
+          <div className="w-75 m-auto">
+            <InputGroup className="mb-3">
+              <FormControl
+                placeholder="Search for books"
+                aria-label="Recipient's username"
+                aria-describedby="basic-addon2"
+                value={this.state.query}
+                onChange={this.onKeyEnter}
+              />
+            </InputGroup>
+  
+            <ListGroup>
+              {this.booksDisplay.map((book, i) => (
+                <SingleBook key={i} book={book} />
+              ))}
+            </ListGroup>
+          </div>
+        );
+      }
   }
 }
 
