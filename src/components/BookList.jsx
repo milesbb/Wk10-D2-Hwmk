@@ -28,7 +28,6 @@ class BookList extends Component {
       console.log(this.booksDisplay);
     } else {
       // end function early if no query set
-    //   this.setState({query: ""});
       this.booksDisplay = books;
       return;
     }
