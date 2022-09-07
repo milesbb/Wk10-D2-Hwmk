@@ -1,6 +1,5 @@
 import { Button, FormControl, InputGroup, ListGroup } from "react-bootstrap";
 import SingleBook from "./SingleBook";
-import books from "../books/history.json";
 import { Component } from "react";
 import WarningSign from "./WarningSign";
 
@@ -11,15 +10,15 @@ class BookList extends Component {
   };
 
   // declares and assigns imported books array into 'booksDisplay' array
-  booksDisplay = books;
+  booksDisplay = this.props.books;
 
   // filters imported books array with query variable (non-case sensitive) and assigns it to booksDisplay
   filterBooks = () => {
     console.log("filtering...");
     if (this.state.query) {
       // create filtered books array
-      this.booksDisplay = books;
-      this.booksDisplay = books.filter(
+      this.booksDisplay = this.props.books;
+      this.booksDisplay = this.props.books.filter(
         (book) =>
           book.title.toLowerCase().includes(this.state.query.toLowerCase()) ===
           true
@@ -28,7 +27,7 @@ class BookList extends Component {
       console.log(this.booksDisplay);
     } else {
       // end function early if no query set
-      this.booksDisplay = books;
+      this.booksDisplay = this.props.books;
       return;
     }
   };
@@ -73,7 +72,7 @@ class BookList extends Component {
           </InputGroup>
 
           <ListGroup>
-            {books.map((book, i) => (
+            {this.props.books.map((book, i) => (
               <SingleBook key={i} book={book} />
             ))}
           </ListGroup>
