@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import './App.css';
-import BookList from './components/BookList';
-import MyNav from './components/MyNav';
+import "./App.css";
+import BookList from "./components/BookList";
+import MyNav from "./components/MyNav";
 
 function App() {
   return (
