@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { ListGroup } from "react-bootstrap";
+import CommentArea from "./CommentArea";
 import MyBadge from "./MyBadge";
 
 class SingleBook extends Component {
@@ -48,6 +49,7 @@ class SingleBook extends Component {
             >
               {this.props.book.title}
             </div>
+            <CommentArea asin={this.props.book.asin} />
           </div>
         </ListGroup.Item>
       );
