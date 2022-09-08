@@ -1,3 +1,3 @@
 # React Book Search App
 
-React app with book searching and selection functionality without hooks
+React app with book searching, selection, async comment fetching and adding functionality without hooks
