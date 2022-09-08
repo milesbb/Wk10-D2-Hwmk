@@ -38,7 +38,7 @@ class AddComment extends Component {
 
       if (response.ok) {
         console.log("comment added");
-
+        alert("Comment added successfully! Double click on the book to see it.")
         const commentHolder = await response.json();
 
         console.log(commentHolder);
