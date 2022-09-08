@@ -24,8 +24,7 @@ class AddComment extends Component {
 
     try {
       const response = await fetch(
-        "https://striveschool-api.herokuapp.com/api/comments/" +
-          this.props.asin,
+        "https://striveschool-api.herokuapp.com/api/comments/",
         {
           method: "POST",
           body: JSON.stringify(this.state.comment),
