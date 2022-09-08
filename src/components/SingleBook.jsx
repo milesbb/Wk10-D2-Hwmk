@@ -23,7 +23,6 @@ class SingleBook extends Component {
       // if selected is true, component is rendered with badge
       return (
         <ListGroup.Item
-          onClick={this.selectItem}
           style={{ background: "#cff0ce" }}
         >
           <MyBadge text="selected" color="green" />

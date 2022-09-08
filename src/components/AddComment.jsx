@@ -6,7 +6,7 @@ class AddComment extends Component {
     comment: {
       comment: "",
       rate: "",
-      elementId: this.props.asin.toString(),
+      elementId: this.props.asin,
     },
   };
 
@@ -30,7 +30,7 @@ class AddComment extends Component {
             <Form.Control as="textarea" rows={3} />
           </Form.Group>
         </Form>
-        <Button className="mt-3" onClick={this.openForm} >Add Comment</Button>
+        <Button className="mt-3">Add Comment</Button>
       </div>
     );
   }

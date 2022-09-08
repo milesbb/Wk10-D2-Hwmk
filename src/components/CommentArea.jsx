@@ -61,14 +61,14 @@ class CommentArea extends Component {
   };
 
   render() {
-    // if (this.state.isLoading) {
-
-    // } else if (this.state.)
 
     return (
-      <div className="ml-auto mt-5 w-50 h-50 bg-white position-absolute rounded overflow-auto shadow p-3 bg-white rounded" style={{bottom: "-10rem", zIndex: 99, right: 10}}>
+      <div
+        className="ml-auto mt-5 w-50 h-50 bg-white position-absolute rounded overflow-auto shadow p-3 bg-white rounded"
+        style={{ bottom: "-10rem", zIndex: 99, right: 10 }}
+      >
         <h3>Comments:</h3>
-        
+
         {this.state.isLoading && (
           <Spinner animation="border" role="status">
             <span className="sr-only">Loading...</span>
@@ -84,8 +84,6 @@ class CommentArea extends Component {
         )}
 
         <AddComment asin={this.props.asin} />
-
-        
       </div>
     );
   }
