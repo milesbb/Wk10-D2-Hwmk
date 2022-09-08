@@ -1,5 +1,6 @@
 import { Component } from "react";
-import { Alert, Spinner } from "react-bootstrap";
+import { Alert, Button, Spinner } from "react-bootstrap";
+import AddComment from "./AddComment";
 import CommentsList from "./CommentsList";
 
 class CommentArea extends Component {
@@ -8,6 +9,7 @@ class CommentArea extends Component {
     isLoading: true,
     errorOccurred: false,
     alert: { variant: "", message: "" },
+    formOpen: false,
   };
 
   fetchComments = async () => {
@@ -64,7 +66,7 @@ class CommentArea extends Component {
     // } else if (this.state.)
 
     return (
-      <div className="ml-auto mr-5 w-75 h-25 bg-white position-absolute fixed-bottom rounded overflow-auto shadow p-3 mb-5 bg-white rounded">
+      <div className="ml-auto mt-5 w-50 h-50 bg-white position-absolute rounded overflow-auto shadow p-3 bg-white rounded" style={{bottom: "-10rem", zIndex: 99, right: 10}}>
         <h3>Comments:</h3>
         
         {this.state.isLoading && (
@@ -77,9 +79,13 @@ class CommentArea extends Component {
             {this.state.alert.message}
           </Alert>
         )}
-        {!this.state.isLoading && (
+        {(!this.state.isLoading || this.state.formOpen) && (
           <CommentsList importComments={this.state.comments} />
         )}
+
+        <AddComment asin={this.props.asin} />
+
+        
       </div>
     );
   }
