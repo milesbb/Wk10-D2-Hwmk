@@ -35,6 +35,7 @@ class SingleBook extends Component {
               height: 400,
               margin: "auto",
             }}
+            onClick={this.selectItem}
           >
             <div
               style={{
@@ -45,11 +46,13 @@ class SingleBook extends Component {
                 fontSize: "2rem",
                 textAlign: "left",
               }}
+              
             >
               {this.props.book.title}
             </div>
-            <CommentArea asin={this.props.book.asin} />
+            
           </div>
+          <CommentArea asin={this.props.book.asin} />
         </ListGroup.Item>
       );
     } else {
