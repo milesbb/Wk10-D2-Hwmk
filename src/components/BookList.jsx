@@ -2,11 +2,17 @@ import { Button, FormControl, InputGroup, ListGroup } from "react-bootstrap";
 import SingleBook from "./SingleBook";
 import { Component } from "react";
 import WarningSign from "./WarningSign";
+import CommentArea from "./CommentArea";
 
 class BookList extends Component {
   // declares and assigns empty string 'query' to state
   state = {
     query: "",
+    bookAsin: "",
+  };
+
+  changeBook = (book) => {
+    this.setState({ bookAsin: book });
   };
 
   // declares and assigns imported books array into 'booksDisplay' array
@@ -43,8 +49,8 @@ class BookList extends Component {
     // if there are 0 results, displays bootstrap react 'danger' alert WarningSign component
     if (this.booksDisplay.length < 1) {
       return (
-        <div className="w-75 m-auto">
-          <InputGroup className="mb-3">
+        <div className="w-100 m-auto">
+          <InputGroup className="mb-3 w-75 mx-auto">
             <FormControl
               placeholder="Search for books"
               aria-label="Recipient's username"
@@ -60,8 +66,31 @@ class BookList extends Component {
     } else if (this.state.query === "") {
       // if query field is empty, display all books
       return (
-        <div className="w-75 m-auto">
-          <InputGroup className="mb-3">
+        <div className="w-100 m-auto">
+          <InputGroup className="mb-3 w-75 mx-auto">
+            <FormControl
+              placeholder="Search for books"
+              aria-label="Recipient's username"
+              aria-describedby="basic-addon2"
+              value={this.state.query}
+              onChange={this.onKeyEnter}
+            />
+          </InputGroup>
+          <div>
+            <ListGroup className="w-50">
+              {this.props.books.map((book, i) => (
+                <SingleBook key={i} book={book} changeBook={this.changeState} />
+              ))}
+            </ListGroup>
+            <CommentArea asin={this.props.book} />
+          </div>
+        </div>
+      );
+    } else {
+      // if there are results, returns results using mapped SingleBook components
+      return (
+        <div className="w-100 m-auto">
+          <InputGroup className="mb-3 w-75 mx-auto">
             <FormControl
               placeholder="Search for books"
               aria-label="Recipient's username"
@@ -71,35 +100,17 @@ class BookList extends Component {
             />
           </InputGroup>
 
-          <ListGroup>
-            {this.props.books.map((book, i) => (
-              <SingleBook key={i} book={book} />
-            ))}
-          </ListGroup>
-        </div>
-      );
-    } else {
-        // if there are results, returns results using mapped SingleBook components
-        return (
-          <div className="w-75 m-auto">
-            <InputGroup className="mb-3">
-              <FormControl
-                placeholder="Search for books"
-                aria-label="Recipient's username"
-                aria-describedby="basic-addon2"
-                value={this.state.query}
-                onChange={this.onKeyEnter}
-              />
-            </InputGroup>
-  
-            <ListGroup>
+          <div>
+            <ListGroup className="w-50">
               {this.booksDisplay.map((book, i) => (
-                <SingleBook key={i} book={book} />
+                <SingleBook key={i} book={book} changeBook={this.changeState} />
               ))}
             </ListGroup>
+            <CommentArea asin={this.props.book} />
           </div>
-        );
-      }
+        </div>
+      );
+    }
   }
 }
 

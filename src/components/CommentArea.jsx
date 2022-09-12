@@ -61,11 +61,10 @@ class CommentArea extends Component {
   };
 
   render() {
-
     return (
       <div
-        className="ml-auto mt-5 w-50 h-50 bg-white position-absolute rounded overflow-auto shadow p-3 bg-white rounded"
-        style={{ bottom: "-10rem", zIndex: 99, right: 10 }}
+        className="ml-auto w-50 bg-white rounded overflow-auto shadow p-3 bg-white rounded"
+        style={{ zIndex: 99, right: 0, bottom: 0, position: "sticky", height: "50rem" }}
       >
         <h3>Comments:</h3>
 
@@ -79,11 +78,14 @@ class CommentArea extends Component {
             {this.state.alert.message}
           </Alert>
         )}
-        {(!this.state.isLoading || this.state.formOpen) && (
+
+        {(!this.state.isLoading || this.state.formOpen) && (this.state.errorOccurred === false) && (
           <CommentsList importComments={this.state.comments} />
         )}
 
-        <AddComment asin={this.props.asin} />
+        {(!this.state.isLoading || this.state.formOpen) && (this.state.errorOccurred === false) && (
+          <AddComment asin={this.props.asin} />
+        )}
       </div>
     );
   }

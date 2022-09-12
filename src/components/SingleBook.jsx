@@ -11,6 +11,7 @@ class SingleBook extends Component {
 
   // toggles state of 'selected' when SingleBook component is clicked
   selectItem = (e) => {
+    
     console.log("Book titled '" + this.props.book.title);
     this.setState({
       selected: !this.state.selected,
@@ -18,13 +19,15 @@ class SingleBook extends Component {
     console.log("selected?: " + this.state.selected);
   };
 
+  componentDidUpdate= () => {
+    
+  }
+
   render() {
     if (this.state.selected) {
       // if selected is true, component is rendered with badge
       return (
-        <ListGroup.Item
-          style={{ background: "#cff0ce" }}
-        >
+        <ListGroup.Item style={{ background: "#cff0ce" }}>
           <MyBadge text="selected" color="green" />
           <div
             style={{
@@ -41,18 +44,16 @@ class SingleBook extends Component {
               style={{
                 background: "#cff0ce",
                 position: "absolute",
-                left: "30%",
-                top: "40%",
+                left: "50%",
+                top: "10%",
                 fontSize: "2rem",
                 textAlign: "left",
+                width: "16rem"
               }}
-              
             >
               {this.props.book.title}
             </div>
-            
           </div>
-          <CommentArea asin={this.props.book.asin} />
         </ListGroup.Item>
       );
     } else {
@@ -68,15 +69,17 @@ class SingleBook extends Component {
               height: 400,
               margin: "auto",
             }}
+            onClick={e => this.props.changeBook(this.props.book.asin)}
           >
             <div
               style={{
                 background: "white",
                 position: "absolute",
-                left: "30%",
-                top: "40%",
+                left: "50%",
+                top: "10%",
                 fontSize: "2rem",
                 textAlign: "left",
+                width: "16rem"
               }}
             >
               {this.props.book.title}
