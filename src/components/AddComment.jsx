@@ -6,7 +6,7 @@ class AddComment extends Component {
     comment: {
       comment: "",
       rate: "",
-      elementId: (this.props.asin.toString()),
+      elementId: this.props.asin.toString(),
     },
   };
 
@@ -38,7 +38,9 @@ class AddComment extends Component {
 
       if (response.ok) {
         console.log("comment added");
-        alert("Comment added successfully! Double click on the book to see it.")
+        alert(
+          "Comment added successfully! Double click on the book to see it."
+        );
         const commentHolder = await response.json();
 
         console.log(commentHolder);
@@ -55,6 +57,16 @@ class AddComment extends Component {
       });
     }
   };
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevProps.asin !== this.props.asin) {
+      this.setState({ comment: { elementId: this.props.asin.toString() } });
+    }
+  };
+
+  // componentDidMount = () => {
+  //   console.log(this.state.comment.)
+  // }
 
   render() {
     return (
@@ -80,7 +92,7 @@ class AddComment extends Component {
           <Form.Group controlId="exampleForm.ControlTextarea1">
             <Form.Label>Comment</Form.Label>
             <Form.Control
-            placeholder="Write your comment here!"
+              placeholder="Write your comment here!"
               as="textarea"
               rows={3}
               value={this.state.comment.comment}
@@ -89,9 +101,10 @@ class AddComment extends Component {
               }}
             />
           </Form.Group>
-          <Button className="mt-3" type="submit">Add Comment</Button>
+          <Button className="mt-3" type="submit">
+            Add Comment
+          </Button>
         </Form>
-        
       </div>
     );
   }

@@ -107,12 +107,13 @@ class CommentArea extends Component {
 
         {(!this.state.isLoading || this.state.formOpen) &&
           this.state.errorOccurred === false && (
-            <CommentsList importComments={this.state.comments} />
+          <CommentsList importComments={this.state.comments} />
+          
           )}
 
         {(!this.state.isLoading || this.state.formOpen) &&
-          this.state.errorOccurred === false && (
-            <AddComment asin={this.state.bookAsin} />
+          (this.state.alert.message === "No Comments Yet" || this.state.errorOccurred === false) && (
+            <AddComment asin={this.props.asin} />
           )}
       </div>
     );

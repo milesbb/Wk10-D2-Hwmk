@@ -13,7 +13,7 @@ class BookList extends Component {
 
   changeBook = book => {
     this.setState({ bookAsin: book, });
-    console.log(this.state.bookAsin)
+    console.log("book list test",this.state.bookAsin)
   };
 
   // declares and assigns imported books array into 'booksDisplay' array
