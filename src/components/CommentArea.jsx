@@ -14,6 +14,7 @@ class CommentArea extends Component {
   };
 
   fetchComments = async () => {
+    this.setState({errorOccurred: false, isLoading: true});
     try {
       const response = await fetch(
         "https://striveschool-api.herokuapp.com/api/comments/" +
@@ -37,8 +38,16 @@ class CommentArea extends Component {
         }
         console.log("Book ID:" + this.state.bookAsin);
         console.log("Comments: ");
-        console.log(comments)
+        console.log(comments);
+        if (comments.length > 200) {
+          this.setState({
+            errorOccurred: true,
+            alert: { variant: "info", message: "Click a book to load comments!" },
+            isLoading: false,
+          });
+        }
         this.setState({ comments: comments });
+        
       } else {
         console.log("Fetch error occurred");
         this.setState({
@@ -58,7 +67,7 @@ class CommentArea extends Component {
   };
 
   componentDidMount = () => {
-    this.fetchComments();
+      this.fetchComments();
   };
 
   componentDidUpdate = () => {
