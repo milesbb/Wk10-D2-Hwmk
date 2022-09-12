@@ -11,17 +11,13 @@ class SingleBook extends Component {
 
   // toggles state of 'selected' when SingleBook component is clicked
   selectItem = (e) => {
-    
     console.log("Book titled '" + this.props.book.title);
     this.setState({
       selected: !this.state.selected,
     });
     console.log("selected?: " + this.state.selected);
+    this.props.changeBook(this.props.book.asin);
   };
-
-  componentDidUpdate= () => {
-    
-  }
 
   render() {
     if (this.state.selected) {
@@ -48,7 +44,7 @@ class SingleBook extends Component {
                 top: "10%",
                 fontSize: "2rem",
                 textAlign: "left",
-                width: "16rem"
+                width: "16rem",
               }}
             >
               {this.props.book.title}
@@ -69,7 +65,6 @@ class SingleBook extends Component {
               height: 400,
               margin: "auto",
             }}
-            onClick={e => this.props.changeBook(this.props.book.asin)}
           >
             <div
               style={{
@@ -79,7 +74,7 @@ class SingleBook extends Component {
                 top: "10%",
                 fontSize: "2rem",
                 textAlign: "left",
-                width: "16rem"
+                width: "16rem",
               }}
             >
               {this.props.book.title}

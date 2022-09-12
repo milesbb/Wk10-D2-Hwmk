@@ -10,6 +10,7 @@ class CommentArea extends Component {
     errorOccurred: false,
     alert: { variant: "", message: "" },
     formOpen: false,
+    bookAsin: "",
   };
 
   fetchComments = async () => {
@@ -34,19 +35,19 @@ class CommentArea extends Component {
             alert: { variant: "info", message: "No Comments Yet" },
           });
         }
-        console.log("Book ID:" + this.props.asin);
+        console.log("Book ID:" + this.state.bookAsin);
         console.log("Comments: ");
-        console.log(comments);
+        console.log(comments)
         this.setState({ comments: comments });
       } else {
-        console.log("Fetch error occured");
+        console.log("Fetch error occurred");
         this.setState({
           errorOccurred: true,
           alert: { variant: "danger", message: "Unable to retrieve data" },
         });
       }
     } catch (error) {
-      console.log("Base Fetch error occured");
+      console.log("Base Fetch error occurred");
       this.setState({
         errorOccurred: true,
         alert: { variant: "danger", message: "Problem with fetch" },
@@ -60,11 +61,27 @@ class CommentArea extends Component {
     this.fetchComments();
   };
 
+  componentDidUpdate = () => {
+    console.log("com area updated");
+    console.log("update checker state", this.state.bookAsin);
+    console.log("update checker props", this.props.asin);
+    if (this.state.bookAsin !== this.props.asin) {
+      this.setState({ bookAsin: this.props.asin });
+      this.fetchComments();
+    }
+  };
+
   render() {
     return (
       <div
         className="ml-auto w-50 bg-white rounded overflow-auto shadow p-3 bg-white rounded"
-        style={{ zIndex: 99, right: 0, bottom: 0, position: "sticky", height: "50rem" }}
+        style={{
+          zIndex: 99,
+          right: 0,
+          bottom: 0,
+          position: "sticky",
+          height: "50rem",
+        }}
       >
         <h3>Comments:</h3>
 
@@ -79,13 +96,15 @@ class CommentArea extends Component {
           </Alert>
         )}
 
-        {(!this.state.isLoading || this.state.formOpen) && (this.state.errorOccurred === false) && (
-          <CommentsList importComments={this.state.comments} />
-        )}
+        {(!this.state.isLoading || this.state.formOpen) &&
+          this.state.errorOccurred === false && (
+            <CommentsList importComments={this.state.comments} />
+          )}
 
-        {(!this.state.isLoading || this.state.formOpen) && (this.state.errorOccurred === false) && (
-          <AddComment asin={this.props.asin} />
-        )}
+        {(!this.state.isLoading || this.state.formOpen) &&
+          this.state.errorOccurred === false && (
+            <AddComment asin={this.state.bookAsin} />
+          )}
       </div>
     );
   }

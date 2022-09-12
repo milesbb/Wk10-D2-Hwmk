@@ -11,8 +11,9 @@ class BookList extends Component {
     bookAsin: "",
   };
 
-  changeBook = (book) => {
-    this.setState({ bookAsin: book });
+  changeBook = book => {
+    this.setState({ bookAsin: book, });
+    console.log(this.state.bookAsin)
   };
 
   // declares and assigns imported books array into 'booksDisplay' array
@@ -44,6 +45,8 @@ class BookList extends Component {
     this.setState({ query: event.target.value });
     this.filterBooks();
   };
+
+  
 
   render() {
     // if there are 0 results, displays bootstrap react 'danger' alert WarningSign component
@@ -79,10 +82,10 @@ class BookList extends Component {
           <div>
             <ListGroup className="w-50">
               {this.props.books.map((book, i) => (
-                <SingleBook key={i} book={book} changeBook={this.changeState} />
+                <SingleBook key={i} book={book} changeBook={this.changeBook} />
               ))}
             </ListGroup>
-            <CommentArea asin={this.props.book} />
+            <CommentArea asin={this.state.bookAsin} />
           </div>
         </div>
       );
@@ -103,10 +106,10 @@ class BookList extends Component {
           <div>
             <ListGroup className="w-50">
               {this.booksDisplay.map((book, i) => (
-                <SingleBook key={i} book={book} changeBook={this.changeState} />
+                <SingleBook key={i} book={book} changeBook={this.changeBook} />
               ))}
             </ListGroup>
-            <CommentArea asin={this.props.book} />
+            <CommentArea asin={this.state.bookAsin} />
           </div>
         </div>
       );
