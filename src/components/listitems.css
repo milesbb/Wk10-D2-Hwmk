@@ -1,0 +1,8 @@
+.deleteButton {
+    display: none;
+}
+
+.commentItem:hover .deleteButton {
+    display: flex;
+    margin: auto;
+}

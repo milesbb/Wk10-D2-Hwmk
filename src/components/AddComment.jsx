@@ -5,7 +5,7 @@ class AddComment extends Component {
   state = {
     comment: {
       comment: "",
-      rate: "",
+      rate: "1",
       elementId: this.props.asin.toString(),
     },
   };
@@ -59,14 +59,8 @@ class AddComment extends Component {
   };
 
   componentDidUpdate = (prevProps, prevState) => {
-    if (prevProps.asin !== this.props.asin) {
-      this.setState({ comment: { elementId: this.props.asin.toString() } });
-    }
+    console.log(this.state.comment);
   };
-
-  // componentDidMount = () => {
-  //   console.log(this.state.comment.)
-  // }
 
   render() {
     return (
