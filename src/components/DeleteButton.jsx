@@ -21,7 +21,7 @@ class DeleteButton extends Component {
         return (
             <Button
                 onClick={this.deleteComment}
-                className="deleteButton"
+                className="deleteButton mt-2"
                 variant="danger"
               >
                 Delete
