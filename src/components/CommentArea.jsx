@@ -4,15 +4,6 @@ import AddComment from "./AddComment";
 import CommentsList from "./CommentsList";
 
 const CommentArea = (props) => {
-  // state = {
-  //   comments: [],
-  //   isLoading: true,
-  //   errorOccurred: false,
-  //   alert: { variant: "", message: "" },
-  //   formOpen: false,
-  //   bookAsin: "",
-  // };
-
   const [commentState, setCommentState] = useState([]);
   const [loadingState, setLoadingState] = useState(false);
   const [errorState, setErrorOccurred] = useState([
@@ -45,8 +36,8 @@ const CommentArea = (props) => {
           setErrorOccurred([true, "info", "Click a book to load comments!"]);
           setLoadingState(false);
         } else {
-          console.log("Book ID", props.asin)
-          console.log(comments)
+          console.log("Book ID", props.asin);
+          console.log(comments);
           setErrorOccurred([false, "", ""]);
           setCommentState(comments);
         }
@@ -64,34 +55,8 @@ const CommentArea = (props) => {
     }
   };
 
-  // const componentDidMount = () => {
-  //     this.fetchComments();
-  // };
-  // let previousProp;
   useEffect(() => {
-    // previousProp = 0;
-    // fetchComments(props.asin);
-  }, []);
-
-  // const componentDidUpdate = () => {
-  //   console.log("com area updated");
-  //   console.log("update checker state", this.state.bookAsin);
-  //   console.log("update checker props", this.props.asin);
-  //   if (this.state.bookAsin !== this.props.asin) {
-  //     this.setState({ bookAsin: this.props.asin });
-  //     this.fetchComments();
-  //   }
-  // };
-
-  useEffect(() => {
-    // console.log("com area updated");
-    // console.log("update checker state", commentState.bookAsin);
-    // console.log("update checker props", props.asin);
-    // if (previousProp !== props.asin) {
-    // setCommentState({ ...commentState, bookAsin: props.asin });
     fetchComments(props.asin);
-    // previousProp = props.asin;
-    // }
   }, [props.asin]);
 
   return (

@@ -5,113 +5,60 @@ import WarningSign from "./WarningSign";
 import CommentArea from "./CommentArea";
 
 const BookList = (props) => {
-  // declares and assigns empty string 'query' to state
-  // state = {
-  //   query: "",
-  //   bookAsin: "",
-  // };
-
-  const [query, setQuery] = useState({ query: "", bookAsin: "" });
+  const [query, setQuery] = useState("");
+  const [bookAsin, setBookAsin] = useState("");
 
   const changeBook = (book) => {
-    setQuery({ ...query, bookAsin: book });
-    console.log("book list test", query.bookAsin);
+    setBookAsin(book);
+    console.log("bookList ID test", bookAsin);
   };
 
-  // declares and assigns imported books array into 'booksDisplay' array
-  let booksDisplay = props.books;
-
-  // filters imported books array with query variable (non-case sensitive) and assigns it to booksDisplay
   const filterBooks = () => {
     console.log("filtering...");
-    if (query.query) {
-      // create filtered books array
-      booksDisplay = props.books;
+    let booksDisplay = props.books;
+    if (query) {
       booksDisplay = props.books.filter(
         (book) =>
-          book.title.toLowerCase().includes(query.query.toLowerCase()) === true
+          book.title.toLowerCase().includes(query.toLowerCase()) === true
       );
-      console.log(query.query);
+      console.log(query);
       console.log(booksDisplay);
+      return booksDisplay;
     } else {
       // end function early if no query set
-      booksDisplay = props.books;
-      return;
+      return booksDisplay;
     }
   };
 
   // assigns value of search bar to query variable on change of value and reloads books
   const onKeyEnter = (event) => {
-    filterBooks();
-    setQuery({ ...query, query: event.target.value });
-    filterBooks();
+    setQuery(event.target.value);
   };
 
-  // if there are 0 results, displays bootstrap react 'danger' alert WarningSign component
-  if (booksDisplay.length < 1) {
-    return (
-      <div className="w-100 m-auto">
-        <InputGroup className="mb-3 w-75 mx-auto">
-          <FormControl
-            placeholder="Search for books"
-            aria-label="Recipient's username"
-            aria-describedby="basic-addon2"
-            value={query.query}
-            onChange={onKeyEnter}
-          />
-        </InputGroup>
+  return (
+    <div className="w-100 m-auto">
+      <InputGroup className="mb-3 w-75 mx-auto">
+        <FormControl
+          placeholder="Search for books"
+          aria-label="Recipient's username"
+          aria-describedby="basic-addon2"
+          value={query}
+          onChange={onKeyEnter}
+        />
+      </InputGroup>
 
-        <WarningSign text="No books found" />
-      </div>
-    );
-  } else if (query.query === "") {
-    // if query field is empty, display all books
-    return (
-      <div className="w-100 m-auto">
-        <InputGroup className="mb-3 w-75 mx-auto">
-          <FormControl
-            placeholder="Search for books"
-            aria-label="Recipient's username"
-            aria-describedby="basic-addon2"
-            value={query.query}
-            onChange={onKeyEnter}
-          />
-        </InputGroup>
-        <div>
-          <ListGroup className="w-50">
-            {props.books.map((book, i) => (
-              <SingleBook key={i} book={book} changeBook={changeBook} />
-            ))}
-          </ListGroup>
-          <CommentArea asin={query.bookAsin} />
-        </div>
-      </div>
-    );
-  } else {
-    // if there are results, returns results using mapped SingleBook components
-    return (
-      <div className="w-100 m-auto">
-        <InputGroup className="mb-3 w-75 mx-auto">
-          <FormControl
-            placeholder="Search for books"
-            aria-label="Recipient's username"
-            aria-describedby="basic-addon2"
-            value={query.query}
-            onChange={onKeyEnter}
-          />
-        </InputGroup>
+      {filterBooks().length === 0 && <WarningSign text="No books found" />}
 
-        <div>
-          <ListGroup className="w-50">
-            {booksDisplay.map((book, i) => (
-              <SingleBook key={i} book={book} changeBook={changeBook} />
-            ))}
-          </ListGroup>
-          <CommentArea asin={query.bookAsin} />
-        </div>
+      <div>
+        <ListGroup className="w-50">
+          {filterBooks().map((book, i) => (
+            <SingleBook key={i} book={book} changeBook={changeBook} />
+          ))}
+        </ListGroup>
+        <CommentArea asin={bookAsin} />
       </div>
-    );
-  }
+    </div>
+  );
 };
 
 export default BookList;

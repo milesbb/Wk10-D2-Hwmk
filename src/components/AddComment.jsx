@@ -2,29 +2,15 @@ import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 
 const AddComment = (props) => {
-  // state = {
-  //   comment: {
-  //     comment: "",
-  //     rate: "1",
-  //     elementId: this.props.asin.toString(),
-  //   },
-  // };
-
-  const [newComment, setNewComment] = useState({
-    comment: {
-      comment: "",
-      rate: "1",
-      elementId: props.asin.toString(),
-    },
-  });
+  const [newComment, setNewComment] = useState("");
+  const [newRate, setNewRate] = useState("1");
 
   const handleChange = (propertyToSet, valueToSet) => {
-    setNewComment({
-      comment: {
-        ...newComment.comment,
-        [propertyToSet]: valueToSet,
-      },
-    });
+    if (propertyToSet === "rate") {
+      setNewRate(valueToSet);
+    } else if (propertyToSet === "comment") {
+      setNewComment(valueToSet);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -35,7 +21,11 @@ const AddComment = (props) => {
         "https://striveschool-api.herokuapp.com/api/comments/",
         {
           method: "POST",
-          body: JSON.stringify(newComment.comment),
+          body: JSON.stringify({
+            comment: newComment,
+            rate: newRate,
+            elementId: props.asin.toString(),
+          }),
           headers: {
             Authorization:
               "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzA3NmUyOTFlYjc2ZDAwMTUxNTAxODQiLCJpYXQiOjE2NjI2Mzk5ODgsImV4cCI6MTY2Mzg0OTU4OH0.oDLXqd8WvOSuqLNbrYK69IsRzsnEkOgH2zzpvNtWcPs",
@@ -50,19 +40,14 @@ const AddComment = (props) => {
           "Comment added successfully! Double click on the book to see it."
         );
         const commentHolder = await response.json();
-
         console.log(commentHolder);
       }
     } catch (error) {
       console.log(error);
+      alert("Error posting comment, try again!");
     } finally {
-      setNewComment({
-        comment: {
-          comment: "",
-          rate: "",
-          elementId: props.asin,
-        },
-      });
+      setNewComment("");
+      setNewRate("1");
     }
   };
 
@@ -74,7 +59,7 @@ const AddComment = (props) => {
           <Form.Label>Rating</Form.Label>
           <Form.Control
             as="select"
-            value={newComment.comment.rate}
+            value={newRate}
             onChange={(e) => {
               handleChange("rate", e.target.value);
             }}
@@ -92,7 +77,7 @@ const AddComment = (props) => {
             placeholder="Write your comment here!"
             as="textarea"
             rows={3}
-            value={newComment.comment.comment}
+            value={newComment}
             onChange={(e) => {
               handleChange("comment", e.target.value);
             }}
