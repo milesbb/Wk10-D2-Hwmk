@@ -13,18 +13,16 @@ const CommentArea = (props) => {
   //   bookAsin: "",
   // };
 
-  const [commentState, setCommentState] = useState({
-    comments: [],
-    isLoading: true,
-    errorOccurred: false,
-    alert: { variant: "", message: "" },
-    formOpen: false,
-    bookAsin: "",
-  });
+  const [commentState, setCommentState] = useState([]);
+  const [loadingState, setLoadingState] = useState(false);
+  const [errorState, setErrorOccurred] = useState([
+    true,
+    "info",
+    "Click a book to load comments!",
+  ]);
 
-  let comments;
   const fetchComments = async (asinCode) => {
-    setCommentState({ ...commentState, errorOccurred: false, isLoading: true });
+    setLoadingState(true);
     try {
       const response = await fetch(
         "https://striveschool-api.herokuapp.com/api/comments/" + asinCode,
@@ -37,58 +35,42 @@ const CommentArea = (props) => {
       );
 
       if (response.ok) {
-        comments = await response.json();
+        const comments = await response.json();
         if (comments.length === 0) {
           console.log("no comments");
-          setCommentState({
-            ...commentState,
-            errorOccurred: true,
-            alert: { variant: "info", message: "No Comments Yet" },
-          });
+          setErrorOccurred([true, "info", "No Comments Yet"]);
+          setLoadingState(false);
         }
-        console.log("Book ID:" + asinCode);
-        console.log("Comments: ");
-        console.log(comments);
         if (comments.length > 200) {
-          setCommentState({
-            ...commentState,
-            errorOccurred: true,
-            alert: {
-              variant: "info",
-              message: "Click a book to load comments!",
-            },
-            isLoading: false,
-          });
+          setErrorOccurred([true, "info", "Click a book to load comments!"]);
+          setLoadingState(false);
         } else {
-          setCommentState({ ...commentState, comments: comments });
+          console.log("Book ID", props.asin)
+          console.log(comments)
+          setErrorOccurred([false, "", ""]);
+          setCommentState(comments);
         }
       } else {
         console.log("Fetch error occurred");
-        setCommentState({
-          ...commentState,
-          errorOccurred: true,
-          alert: { variant: "danger", message: "Unable to retrieve data" },
-        });
+        setErrorOccurred([true, "danger", "Unable to retrieve data"]);
+        setLoadingState(false);
       }
     } catch (error) {
       console.log("Base Fetch error occurred");
-      setCommentState({
-        ...commentState,
-        errorOccurred: true,
-        alert: { variant: "danger", message: "Problem with fetch" },
-      });
+      setErrorOccurred([true, "danger", "Problem with fetch"]);
+      setLoadingState(false);
     } finally {
-      setCommentState({ ...commentState, isLoading: false });
+      setLoadingState(false);
     }
   };
 
   // const componentDidMount = () => {
   //     this.fetchComments();
   // };
-  let previousProp
+  // let previousProp;
   useEffect(() => {
-    previousProp = 0
-    fetchComments(props.asin);
+    // previousProp = 0;
+    // fetchComments(props.asin);
   }, []);
 
   // const componentDidUpdate = () => {
@@ -101,17 +83,15 @@ const CommentArea = (props) => {
   //   }
   // };
 
-  
-
   useEffect(() => {
-    console.log("com area updated");
-    console.log("update checker state", commentState.bookAsin);
-    console.log("update checker props", props.asin);
-    if (previousProp !== props.asin) {
-      setCommentState({ ...commentState, bookAsin: props.asin });
-      fetchComments(props.asin);
-      previousProp = props.asin;
-    }
+    // console.log("com area updated");
+    // console.log("update checker state", commentState.bookAsin);
+    // console.log("update checker props", props.asin);
+    // if (previousProp !== props.asin) {
+    // setCommentState({ ...commentState, bookAsin: props.asin });
+    fetchComments(props.asin);
+    // previousProp = props.asin;
+    // }
   }, [props.asin]);
 
   return (
@@ -127,25 +107,23 @@ const CommentArea = (props) => {
     >
       <h3>Comments:</h3>
 
-      {commentState.isLoading && (
+      {loadingState === true && (
         <Spinner animation="border" role="status">
           <span className="sr-only">Loading...</span>
         </Spinner>
       )}
-      {commentState.errorOccurred && (
-        <Alert className="m-1" variant={commentState.alert.variant}>
-          {commentState.alert.message}
+      {errorState[0] === true && (
+        <Alert className="m-1" variant={errorState[1]}>
+          {errorState[2]}
         </Alert>
       )}
 
-      {(!commentState.isLoading || commentState.formOpen) &&
-        commentState.errorOccurred === false && (
-          <CommentsList importComments={commentState.comments} />
-        )}
+      {loadingState === false && errorState[0] === false && (
+        <CommentsList importComments={commentState} />
+      )}
 
-      {(!commentState.isLoading || commentState.formOpen) &&
-        (commentState.alert.message === "No Comments Yet" ||
-          commentState.errorOccurred === false) && (
+      {loadingState === false &&
+        (errorState[2] === "No Comments Yet" || errorState[0] === false) && (
           <AddComment asin={props.asin} />
         )}
     </div>
