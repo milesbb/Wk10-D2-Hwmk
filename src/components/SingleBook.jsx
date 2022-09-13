@@ -1,40 +1,41 @@
-import { Component } from "react";
+import { useState } from "react";
 import { ListGroup } from "react-bootstrap";
-import CommentArea from "./CommentArea";
 import MyBadge from "./MyBadge";
 
-class SingleBook extends Component {
+const SingleBook = (props) => {
   // declares and assigns 'selected' boolean within state
-  state = {
-    selected: false,
-  };
+  // state = {
+  //   selected: false,
+  // };
+
+  const [selected, setSelected] = useState({selected: false})
 
   // toggles state of 'selected' when SingleBook component is clicked
-  selectItem = (e) => {
-    console.log("Book titled '" + this.props.book.title);
-    this.setState({
-      selected: !this.state.selected,
+  const selectItem = (e) => {
+    console.log("Book titled '" + props.book.title);
+    setSelected({
+      selected: !selected.selected,
     });
-    console.log("selected?: " + this.state.selected);
-    this.props.changeBook(this.props.book.asin);
+    console.log("selected?: " + selected.selected);
+    props.changeBook(props.book.asin);
   };
 
-  render() {
-    if (this.state.selected) {
+
+    if (selected.selected) {
       // if selected is true, component is rendered with badge
       return (
         <ListGroup.Item style={{ background: "#cff0ce" }}>
           <MyBadge text="selected" color="green" />
           <div
             style={{
-              backgroundImage: `url("${this.props.book.img}")`,
+              backgroundImage: `url("${props.book.img}")`,
               backgroundRepeat: "no-repeat",
               objectFit: "contain",
               backgroundSize: "300px",
               height: 400,
               margin: "auto",
             }}
-            onClick={this.selectItem}
+            onClick={selectItem}
           >
             <div
               style={{
@@ -47,7 +48,7 @@ class SingleBook extends Component {
                 width: "16rem",
               }}
             >
-              {this.props.book.title}
+              {props.book.title}
             </div>
           </div>
         </ListGroup.Item>
@@ -55,10 +56,10 @@ class SingleBook extends Component {
     } else {
       // if selected is false, component is rendered without badge
       return (
-        <ListGroup.Item onClick={this.selectItem}>
+        <ListGroup.Item onClick={selectItem}>
           <div
             style={{
-              backgroundImage: `url("${this.props.book.img}")`,
+              backgroundImage: `url("${props.book.img}")`,
               backgroundRepeat: "no-repeat",
               objectFit: "contain",
               backgroundSize: "300px",
@@ -77,13 +78,13 @@ class SingleBook extends Component {
                 width: "16rem",
               }}
             >
-              {this.props.book.title}
+              {props.book.title}
             </div>
           </div>
         </ListGroup.Item>
       );
     }
-  }
+  
 }
 
 export default SingleBook;

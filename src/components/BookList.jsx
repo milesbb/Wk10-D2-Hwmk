@@ -1,120 +1,117 @@
-import { Button, FormControl, InputGroup, ListGroup } from "react-bootstrap";
+import { FormControl, InputGroup, ListGroup } from "react-bootstrap";
 import SingleBook from "./SingleBook";
-import { Component } from "react";
+import { useState } from "react";
 import WarningSign from "./WarningSign";
 import CommentArea from "./CommentArea";
 
-class BookList extends Component {
+const BookList = (props) => {
   // declares and assigns empty string 'query' to state
-  state = {
-    query: "",
-    bookAsin: "",
-  };
+  // state = {
+  //   query: "",
+  //   bookAsin: "",
+  // };
 
-  changeBook = book => {
-    this.setState({ bookAsin: book, });
-    console.log("book list test",this.state.bookAsin)
+  const [query, setQuery] = useState({ query: "", bookAsin: "" });
+
+  const changeBook = (book) => {
+    setQuery({ ...query, bookAsin: book });
+    console.log("book list test", query.bookAsin);
   };
 
   // declares and assigns imported books array into 'booksDisplay' array
-  booksDisplay = this.props.books;
+  let booksDisplay = props.books;
 
   // filters imported books array with query variable (non-case sensitive) and assigns it to booksDisplay
-  filterBooks = () => {
+  const filterBooks = () => {
     console.log("filtering...");
-    if (this.state.query) {
+    if (query.query) {
       // create filtered books array
-      this.booksDisplay = this.props.books;
-      this.booksDisplay = this.props.books.filter(
+      booksDisplay = props.books;
+      booksDisplay = props.books.filter(
         (book) =>
-          book.title.toLowerCase().includes(this.state.query.toLowerCase()) ===
-          true
+          book.title.toLowerCase().includes(query.query.toLowerCase()) === true
       );
-      console.log(this.state.query);
-      console.log(this.booksDisplay);
+      console.log(query.query);
+      console.log(booksDisplay);
     } else {
       // end function early if no query set
-      this.booksDisplay = this.props.books;
+      booksDisplay = props.books;
       return;
     }
   };
 
   // assigns value of search bar to query variable on change of value and reloads books
-  onKeyEnter = (event) => {
-    this.filterBooks();
-    this.setState({ query: event.target.value });
-    this.filterBooks();
+  const onKeyEnter = (event) => {
+    filterBooks();
+    setQuery({ ...query, query: event.target.value });
+    filterBooks();
   };
 
-  
+  // if there are 0 results, displays bootstrap react 'danger' alert WarningSign component
+  if (booksDisplay.length < 1) {
+    return (
+      <div className="w-100 m-auto">
+        <InputGroup className="mb-3 w-75 mx-auto">
+          <FormControl
+            placeholder="Search for books"
+            aria-label="Recipient's username"
+            aria-describedby="basic-addon2"
+            value={query.query}
+            onChange={onKeyEnter}
+          />
+        </InputGroup>
 
-  render() {
-    // if there are 0 results, displays bootstrap react 'danger' alert WarningSign component
-    if (this.booksDisplay.length < 1) {
-      return (
-        <div className="w-100 m-auto">
-          <InputGroup className="mb-3 w-75 mx-auto">
-            <FormControl
-              placeholder="Search for books"
-              aria-label="Recipient's username"
-              aria-describedby="basic-addon2"
-              value={this.state.query}
-              onChange={this.onKeyEnter}
-            />
-          </InputGroup>
+        <WarningSign text="No books found" />
+      </div>
+    );
+  } else if (query.query === "") {
+    // if query field is empty, display all books
+    return (
+      <div className="w-100 m-auto">
+        <InputGroup className="mb-3 w-75 mx-auto">
+          <FormControl
+            placeholder="Search for books"
+            aria-label="Recipient's username"
+            aria-describedby="basic-addon2"
+            value={query.query}
+            onChange={onKeyEnter}
+          />
+        </InputGroup>
+        <div>
+          <ListGroup className="w-50">
+            {props.books.map((book, i) => (
+              <SingleBook key={i} book={book} changeBook={changeBook} />
+            ))}
+          </ListGroup>
+          <CommentArea asin={query.bookAsin} />
+        </div>
+      </div>
+    );
+  } else {
+    // if there are results, returns results using mapped SingleBook components
+    return (
+      <div className="w-100 m-auto">
+        <InputGroup className="mb-3 w-75 mx-auto">
+          <FormControl
+            placeholder="Search for books"
+            aria-label="Recipient's username"
+            aria-describedby="basic-addon2"
+            value={query.query}
+            onChange={onKeyEnter}
+          />
+        </InputGroup>
 
-          <WarningSign text="No books found" />
+        <div>
+          <ListGroup className="w-50">
+            {booksDisplay.map((book, i) => (
+              <SingleBook key={i} book={book} changeBook={changeBook} />
+            ))}
+          </ListGroup>
+          <CommentArea asin={query.bookAsin} />
         </div>
-      );
-    } else if (this.state.query === "") {
-      // if query field is empty, display all books
-      return (
-        <div className="w-100 m-auto">
-          <InputGroup className="mb-3 w-75 mx-auto">
-            <FormControl
-              placeholder="Search for books"
-              aria-label="Recipient's username"
-              aria-describedby="basic-addon2"
-              value={this.state.query}
-              onChange={this.onKeyEnter}
-            />
-          </InputGroup>
-          <div>
-            <ListGroup className="w-50">
-              {this.props.books.map((book, i) => (
-                <SingleBook key={i} book={book} changeBook={this.changeBook} />
-              ))}
-            </ListGroup>
-            <CommentArea asin={this.state.bookAsin} />
-          </div>
-        </div>
-      );
-    } else {
-      // if there are results, returns results using mapped SingleBook components
-      return (
-        <div className="w-100 m-auto">
-          <InputGroup className="mb-3 w-75 mx-auto">
-            <FormControl
-              placeholder="Search for books"
-              aria-label="Recipient's username"
-              aria-describedby="basic-addon2"
-              value={this.state.query}
-              onChange={this.onKeyEnter}
-            />
-          </InputGroup>
-
-          <div>
-            <ListGroup className="w-50">
-              {this.booksDisplay.map((book, i) => (
-                <SingleBook key={i} book={book} changeBook={this.changeBook} />
-              ))}
-            </ListGroup>
-            <CommentArea asin={this.state.bookAsin} />
-          </div>
-        </div>
-      );
-    }
+      </div>
+    );
   }
-}
+};
 
 export default BookList;
