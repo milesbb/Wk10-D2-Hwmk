@@ -47,10 +47,9 @@ const BookList = (props) => {
         />
       </InputGroup>
 
-      {filterBooks().length === 0 && <WarningSign text="No books found" />}
-
       <div>
         <ListGroup className="w-50">
+          {filterBooks().length === 0 && <WarningSign text="No books found" />}
           {filterBooks().map((book, i) => (
             <SingleBook key={i} book={book} changeBook={changeBook} />
           ))}
